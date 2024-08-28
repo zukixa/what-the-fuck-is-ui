@@ -246,7 +246,7 @@ export default function Component() {
       limitsLink: "https://discord.com/channels/1120753218071310346/1172503125177937981/1258843593557282906",
       performance: { gpt4: 0, claude3: 0, gemini: 0, llama: 0, availability: 100 },
       modelAvailability: { 'GPT-4': '✅', 'Claude-3': '💰', 'Gemini-1.5': '❌', 'Llama-3.1-405b': '❌', 'Midjourney': '❌', 'DALL-E-3': '❌', 'Stable-Image-Ultra': '❌', 'Stable-Diffusion-3': '❌' },
-      endpointCoverage: { 'Text-To-Speech': '✅', 'Speech-To-Text': '✅', 'Embeddings': '✅', 'Audio': '✅', 'Translation': '✅', 'Image-Upscale': '❌' },
+      endpointCoverage: { 'Text-To-Speech': '❌', 'Speech-To-Text': '❌', 'Embeddings': '❌', 'Audio': '❌', 'Translation': '❌', 'Image-Upscale': '❌' },
     },
     {
       name: "ElectronHub",

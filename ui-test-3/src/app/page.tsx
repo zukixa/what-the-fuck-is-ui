@@ -6,8 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { AlertTriangle, Info, Star, ExternalLink } from 'lucide-react'
 import { getApiData } from '@/components/getDiscordData'
-
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SortBySelect } from '@/components/sortBySelect'
 interface Tier {
   name: string;
   description: string;
@@ -63,7 +69,7 @@ export default function Component() {
   
   const [services, setApiData] = useState<Service[]>([])
   const [activeTab, setActiveTab] = useState('overview');
-  const [overviewSorting, setOverviewSorting] = useState<'members' | 'openSource' | 'tier'>('members');
+  const [overviewSorting, setOverviewSorting] = useState<'Members' | 'Open Source' | 'Tier'>('Members');
   const [activeTier, setActiveTier] = useState<string>(''); // Set appropriate default value or type
   const [activeModelsTab, setActiveModelsTab] = useState('availability');
   const [modelAvailabilitySorting, setModelAvailabilitySorting] = useState<'GPT-4' | 'Claude-3' | 'Gemini-1.5' | 'Llama-3.1-405b' | 'Midjourney' | 'DALL-E-3' | 'Stable-Image-Ultra' | 'Stable-Diffusion-3' | ''>('');
@@ -108,6 +114,7 @@ export default function Component() {
     }
     fetchData();
   }, []);
+  
   const isLoading = !services.length;
   /*const services: Service[] = [
     {
@@ -528,23 +535,31 @@ export default function Component() {
         </TabsList>
         <TabsContent value="overview">
           <div className="mb-4">
-            <Button onClick={() => setOverviewSorting('members')} variant={overviewSorting === 'members' ? 'default' : 'outline'}>
-              Sort by Members
-            </Button>
-            <Button onClick={() => setOverviewSorting('openSource')} variant={overviewSorting === 'openSource' ? 'default' : 'outline'}>
-              Sort by Open Source
-            </Button>
-            <Button onClick={() => setOverviewSorting('tier')} variant={overviewSorting === 'tier' ? 'default' : 'outline'}>
-              Sort by Tier
-            </Button>
+          <SortBySelect
+                trigger="Sort by"
+                items={['Members', 'Open Source', 'Tier']}
+                activeSelect={overviewSorting}
+                setSelect={setOverviewSorting}
+            />
+            {/*<Select value={overviewSorting} onValueChange={handleSortValueChange}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="members">Members</SelectItem>
+                <SelectItem value="openSource">Open Source</SelectItem>
+                <SelectItem value="tier">Tier</SelectItem>
+              </SelectContent>
+            </Select>*/}
+            
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {services
               .filter(s => ["Tier 1", "Tier 2", "Tier 3"].includes(s.tier))
               .sort((a, b) => {
-                if (overviewSorting === 'members') return (b.users ?? 0) - (a.users ?? 0);
-                if (overviewSorting === 'openSource') return (b.openSource ? 1 : 0) - (a.openSource ? 1 : 0);
-                if (overviewSorting === 'tier') return a.tier.localeCompare(b.tier);
+                if (overviewSorting === 'Members') return (b.users ?? 0) - (a.users ?? 0);
+                if (overviewSorting === 'Open Source') return (b.openSource ? 1 : 0) - (a.openSource ? 1 : 0);
+                if (overviewSorting === 'Tier') return a.tier.localeCompare(b.tier);
                 return 0;
               })
               .map(renderServiceCard)}
@@ -608,15 +623,12 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="mb-4">
-                    {(['GPT-4', 'Claude-3', 'Gemini-1.5', 'Llama-3.1-405b', 'Midjourney', 'DALL-E-3', 'Stable-Image-Ultra', 'Stable-Diffusion-3'] as const).map((model) => (
-                      <Button
-                        key={model}
-                        onClick={() => setModelAvailabilitySorting(model)}
-                        variant={modelAvailabilitySorting === model ? 'default' : 'outline'}
-                      >
-                        Sort by {model}
-                      </Button>
-                    ))}
+                    <SortBySelect 
+                      trigger='Sort by'
+                      items={['GPT-4', 'Claude-3', 'Gemini-1.5', 'Llama-3.1-405b', 'Midjourney', 'DALL-E-3', 'Stable-Image-Ultra', 'Stable-Diffusion-3']}
+                      activeSelect={modelAvailabilitySorting}
+                      setSelect={setModelAvailabilitySorting}
+                    />
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -674,15 +686,13 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="mb-4">
-                    {(['Text-To-Speech', 'Speech-To-Text', 'Embeddings', 'Audio', 'Translation', 'Image-Upscale'] as const).map((endpoint) => (
-                      <Button
-                        key={endpoint}
-                        onClick={() => setEndpointCoverageSorting(endpoint)}
-                        variant={endpointCoverageSorting === endpoint ? 'default' : 'outline'}
-                      >
-                        Sort by {endpoint}
-                      </Button>
-                    ))}
+                    <SortBySelect 
+                      trigger='Sort by'
+                      items={['Text-To-Speech', 'Speech-To-Text', 'Embeddings', 'Audio', 'Translation', 'Image-Upscale']}
+                      activeSelect={endpointCoverageSorting}
+                      setSelect={setEndpointCoverageSorting}
+                    />
+                    
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -739,15 +749,13 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="mb-4">
-                    {(['gpt4', 'claude3', 'gemini', 'llama', 'availability'] as const).map((metric) => (
-                      <Button
-                        key={metric}
-                        onClick={() => setPerformanceSorting(metric)}
-                        variant={performanceSorting === metric ? 'default' : 'outline'}
-                      >
-                        Sort by {metric}
-                      </Button>
-                    ))}
+                    <SortBySelect 
+                      trigger='Sort by'
+                      items={['gpt4', 'claude3', 'gemini', 'llama', 'availability']}
+                      activeSelect={performanceSorting}
+                      setSelect={setPerformanceSorting}
+                    />
+                   
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full">

@@ -1,11 +1,11 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { AlertTriangle, Info, Star, ExternalLink } from 'lucide-react'
-
+import { getApiData } from '@/components/getDiscordData'
 
 
 interface Tier {
@@ -60,6 +60,8 @@ interface Service {
 
 
 export default function Component() {
+  
+  const [services, setApiData] = useState<Service[]>([])
   const [activeTab, setActiveTab] = useState('overview');
   const [overviewSorting, setOverviewSorting] = useState<'members' | 'openSource' | 'tier'>('members');
   const [activeTier, setActiveTier] = useState<string>(''); // Set appropriate default value or type
@@ -99,8 +101,15 @@ export default function Component() {
       color: "bg-blue-500",
     },
   ]
-
-  const services: Service[] = [
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getApiData();
+      setApiData(data);
+    }
+    fetchData();
+  }, []);
+  const isLoading = !services.length;
+  /*const services: Service[] = [
     {
       name: "zukijourney",
       tier: "Tier 1",
@@ -392,8 +401,14 @@ export default function Component() {
       owners: "Inactive",
       discord: "https://discord.gg/zPX6QWm5fg",
     },
-  ];
-
+  ];*/
+  const Spinner = () => (
+    <div className="flex items-center justify-center space-x-2">
+      <div className="animate-spin h-6 w-6 border-t-2 border-gray-900 rounded-full" />
+      <p className="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
+    </div>
+  );
+  
   const renderServiceCard = (service: Service) => {
     const renderNote = (note: string) => {
       const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -498,7 +513,13 @@ export default function Component() {
           </p>
         </CardContent>
       </Card>
+      {isLoading ? (
 
+                    <div className="flex items-center justify-center">
+                      <Spinner />
+                    </div>
+
+              ) : (
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -785,7 +806,7 @@ export default function Component() {
             </TabsContent>
           </Tabs>
         </TabsContent>
-      </Tabs>
+      </Tabs>)}
     </div>
   );
 };

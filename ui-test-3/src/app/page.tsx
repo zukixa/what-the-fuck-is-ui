@@ -18,64 +18,55 @@ interface Service {
   name: string;
   tier: string;
   users: number;
-  nsfwAllowed: string;
-  openSource: boolean;
+  nsfwAllowed?: string;
+  openSource?: boolean;
   openSourceLink?: string;
   owners: string;
   ownersLink?: string;
-  models: string;
-  modelsLink: string;
+  models?: string;
+  modelsLink?: string;
   notes: string;
   notesLink?: string;
-  discord: string;
-  limitsLink: string;
-  performance: {
-    gpt4: number;
-    claude3: number;
-    gemini: number;
-    llama: number;
-    availability: number;
+  discord?: string;
+  limitsLink?: string;
+  performance?: {
+    gpt4?: number;
+    claude3?: number;
+    gemini?: number;
+    llama?: number;
+    availability?: number;
   };
-  modelAvailability: {
-    'GPT-4': '✅' | '💰' | '❌';
-    'Claude-3': '✅' | '💰' | '❌';
-    'Gemini-1.5': '✅' | '💰' | '❌';
-    'Llama-3.1-405b': '✅' | '💰' | '❌';
-    'Midjourney': '✅' | '💰' | '❌';
-    'DALL-E-3': '✅' | '💰' | '❌';
-    'Stable-Image-Ultra': '✅' | '💰' | '❌';
-    'Stable-Diffusion-3': '✅' | '💰' | '❌';
+  modelAvailability?: {
+    'GPT-4'?: '✅' | '💰' | '❌';
+    'Claude-3'?: '✅' | '💰' | '❌';
+    'Gemini-1.5'?: '✅' | '💰' | '❌';
+    'Llama-3.1-405b'?: '✅' | '💰' | '❌';
+    'Midjourney'?: '✅' | '💰' | '❌';
+    'DALL-E-3'?: '✅' | '💰' | '❌';
+    'Stable-Image-Ultra'?: '✅' | '💰' | '❌';
+    'Stable-Diffusion-3'?: '✅' | '💰' | '❌';
   };
-  endpointCoverage: {
-    'Text-To-Speech': '✅' | '❌';
-    'Speech-To-Text': '✅' | '❌';
-    'Embeddings': '✅' | '❌';
-    'Audio': '✅' | '❌';
-    'Translation': '✅' | '❌';
-    'Image-Upscale': '✅' | '❌';
+  endpointCoverage?: {
+    'Text-To-Speech'?: '✅' | '❌';
+    'Speech-To-Text'?: '✅' | '❌';
+    'Embeddings'?: '✅' | '❌';
+    'Audio'?: '✅' | '❌';
+    'Translation'?: '✅' | '❌';
+    'Image-Upscale'?: '✅' | '❌';
   };
 }
 
-interface NonTieredService {
-  name: string;
-  users: number;
-  provides: string;
-  notes: string;
-  notesLink?: string;
-  discord: string;
-}
+
+
 
 export default function Component() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [activeTier, setActiveTier] = useState("Tier 1")
-  const [activeModelsTab, setActiveModelsTab] = useState("availability")
+  const [activeTab, setActiveTab] = useState('overview');
   const [overviewSorting, setOverviewSorting] = useState<'members' | 'openSource' | 'tier'>('members');
-  const [performanceSorting, setPerformanceSorting] = useState<'gpt4' | 'claude3' | 'gemini' | 'llama' | 'availability'>('availability');
-  type ModelAvailabilityKey = keyof Service['modelAvailability'];
-  type EndpointCoverageKey = keyof Service['endpointCoverage'];
-  const [modelAvailabilitySorting, setModelAvailabilitySorting] = useState<ModelAvailabilityKey | ''>('');
-  const [endpointCoverageSorting, setEndpointCoverageSorting] = useState<EndpointCoverageKey | ''>('');
-
+  const [activeTier, setActiveTier] = useState<string>(''); // Set appropriate default value or type
+  const [activeModelsTab, setActiveModelsTab] = useState('availability');
+  const [modelAvailabilitySorting, setModelAvailabilitySorting] = useState<'GPT-4' | 'Claude-3' | 'Gemini-1.5' | 'Llama-3.1-405b' | 'Midjourney' | 'DALL-E-3' | 'Stable-Image-Ultra' | 'Stable-Diffusion-3' | ''>('');
+  const [endpointCoverageSorting, setEndpointCoverageSorting] = useState<'Text-To-Speech' | 'Speech-To-Text' | 'Embeddings' | 'Audio' | 'Translation' | 'Image-Upscale' | ''>('');
+  const [performanceSorting, setPerformanceSorting] = useState<'gpt4' | 'claude3' | 'gemini' | 'llama' | 'availability' | ''>('');
   const tiers: Tier[] = [
     {
       name: "Tier 1",
@@ -384,25 +375,26 @@ export default function Component() {
       modelAvailability: { 'GPT-4': '❌', 'Claude-3': '❌', 'Gemini-1.5': '❌', 'Llama-3.1-405b': '❌', 'Midjourney': '❌', 'DALL-E-3': '❌', 'Stable-Image-Ultra': '❌', 'Stable-Diffusion-3': '❌' },
       endpointCoverage: { 'Text-To-Speech': '❌', 'Speech-To-Text': '❌', 'Embeddings': '❌', 'Audio': '❌', 'Translation': '❌', 'Image-Upscale': '❌' },
     },
-  ];
-  const nonTieredServices: NonTieredService[] = [
+
     {
       name: "FreeGPT4",
       users: 4818,
-      provides: "Ancient community of gpt-4-free individuals. Plenty good AI-related content.",
-      notes: "Ran by @lomusire",
+      tier: "Non-Tiered",
+      notes: "Ancient community of gpt-4-free individuals. Plenty good AI-related content.",
+      owners: "lomusire",
       discord: "https://discord.gg/free-gpt-4-1106520284967735316",
     },
     {
       name: "g4f.ai",
+      tier: "Non-Tiered",
       users: 14238,
-      provides: "The OG server. Hub of the github repository that started it all.",
-      notes: "Inactive",
+      notes: "The OG server. Hub of the github repository that started it all.",
+      owners: "Inactive",
       discord: "https://discord.gg/zPX6QWm5fg",
     },
-  ]
+  ];
 
-  const renderServiceCard = (service: Service | NonTieredService) => {
+  const renderServiceCard = (service: Service) => {
     const renderNote = (note: string) => {
       const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
       const parts = [];
@@ -429,64 +421,68 @@ export default function Component() {
     };
   
     return (
-      <Card key={service.name} className={`flex flex-col ${tiers.find(t => t.name === (service as Service).tier)?.color || 'bg-blue-500'}`}>
+      <Card key={service.name} className={`flex flex-col ${tiers.find(t => t.name === service.tier)?.color || 'bg-blue-500'}`}>
         <CardHeader className="flex-grow">
           <CardTitle className="flex items-center justify-between text-white">
             {service.name}
-            {'tier' in service && <Badge variant="secondary">{service.tier}</Badge>}
+            {service.tier && <Badge variant="secondary">{service.tier}</Badge>}
           </CardTitle>
           <CardDescription className="text-white">{`${service.users.toLocaleString()} users`}</CardDescription>
         </CardHeader>
         <CardContent className="text-white">
-          {'provides' in service ? (
-            <>
-              <p className="mb-2"><strong>Provides: </strong> {service.provides}</p>
-              <p className="mb-2"><strong>Notes: </strong> 
-                {renderNote(service.notes)}
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="mb-2"><strong>Notes: </strong> 
-                {renderNote(service.notes)}
-              </p>
-              <p className="mb-2"><strong>NSFW/RP: </strong> {service.nsfwAllowed}</p>
-              <p className="mb-2"><strong>Open Source: </strong> 
-                {service.openSource ? (
-                  service.openSourceLink ? (
-                    <a href={service.openSourceLink} target="_blank" rel="noopener noreferrer" className="underline">Yes</a>
-                  ) : "Yes"
-                ) : "No"}
-              </p>
-              <p className="mb-2"><strong>Owner(s): </strong> 
-                {service.ownersLink ? (
-                  <a href={service.ownersLink} target="_blank" rel="noopener noreferrer" className="underline">{service.owners}</a>
-                ) : service.owners}
-              </p>
-              <Button variant="outline" size="sm" className="mt-2 text-black" onClick={() => window.open(service.modelsLink, '_blank')}>
-                <ExternalLink className="mr-2 h-4 w-4" />
-                View Models
-              </Button>
-              <Button variant="outline" size="sm" className="mt-2 ml-2 text-black" onClick={() => window.open(service.limitsLink, '_blank')}>
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Limits/Pricing
-              </Button>
-            </>
+          {service.notes && (
+            <p className="mb-2"><strong>Notes: </strong> {renderNote(service.notes)}</p>
           )}
-          <Button variant="outline" size="sm" className="mt-2 text-black" onClick={() => window.open(service.discord, '_blank')}>
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Join Discord
-          </Button>
+          {service.nsfwAllowed && (
+            <p className="mb-2"><strong>NSFW/RP: </strong> {service.nsfwAllowed}</p>
+          )}
+          {service.openSource !== undefined && (
+            <p className="mb-2"><strong>Open Source: </strong> 
+              {service.openSource ? (
+                service.openSourceLink ? (
+                  <a href={service.openSourceLink} target="_blank" rel="noopener noreferrer" className="underline">Yes</a>
+                ) : "Yes"
+              ) : "No"}
+            </p>
+          )}
+          {service.owners && (
+            <p className="mb-2"><strong>Owner(s): </strong> 
+              {service.ownersLink ? (
+                <a href={service.ownersLink} target="_blank" rel="noopener noreferrer" className="underline">{service.owners}</a>
+              ) : service.owners}
+            </p>
+          )}
+          {service.models && service.modelsLink && (
+            <Button variant="outline" size="sm" className="mt-2 text-black" onClick={() => window.open(service.modelsLink, '_blank')}>
+              <ExternalLink className="mr-2 h-4 w-4" />
+              View Models
+            </Button>
+          )}
+          {service.limitsLink && (
+            <Button variant="outline" size="sm" className="mt-2 ml-2 text-black" onClick={() => window.open(service.limitsLink, '_blank')}>
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Limits/Pricing
+            </Button>
+          )}
+          {service.discord && (
+            <Button variant="outline" size="sm" className="mt-2 text-black" onClick={() => window.open(service.discord, '_blank')}>
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Join Discord
+            </Button>
+          )}
         </CardContent>
       </Card>
     );
   };
+  
 
   return (
     <div className="container mx-auto p-4 space-y-8">
       <header className="text-center">
         <h1 className="text-4xl font-bold mb-4">cool ai stuff!</h1>
-        <p className="text-xl text-muted-foreground">A comprehensive overview of AI APIs offering free usage of various AI models and related.</p>
+        <p className="text-xl text-muted-foreground">
+          A comprehensive overview of AI APIs offering free usage of various AI models and related.
+        </p>
       </header>
 
       <Card className="bg-yellow-100 dark:bg-yellow-900">
@@ -497,7 +493,9 @@ export default function Component() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>We are not endorsing any of the listed services! Some of them might be considered controversial. We are not responsible for any legal, technical or any other damage caused by using the listed services. Data is provided without warranty of any kind. Use these at your own risk!</p>
+          <p>
+            We are not endorsing any of the listed services! Some of them might be considered controversial. We are not responsible for any legal, technical or any other damage caused by using the listed services. Data is provided without warranty of any kind. Use these at your own risk!
+          </p>
         </CardContent>
       </Card>
 
@@ -523,8 +521,8 @@ export default function Component() {
             {services
               .filter(s => ["Tier 1", "Tier 2", "Tier 3"].includes(s.tier))
               .sort((a, b) => {
-                if (overviewSorting === 'members') return b.users - a.users;
-                if (overviewSorting === 'openSource') return Number(b.openSource) - Number(a.openSource);
+                if (overviewSorting === 'members') return (b.users ?? 0) - (a.users ?? 0);
+                if (overviewSorting === 'openSource') return (b.openSource ? 1 : 0) - (a.openSource ? 1 : 0);
                 if (overviewSorting === 'tier') return a.tier.localeCompare(b.tier);
                 return 0;
               })
@@ -540,34 +538,40 @@ export default function Component() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>The tier of each service is determined based on the following factors: number of users, NSFW/RP policy, open source status, stability & longevity of the service, and its features/capabilities.</p>
+              <p>
+                The tier of each service is determined based on the following factors: number of users, NSFW/RP policy, open source status, stability & longevity of the service, and its features/capabilities.
+              </p>
             </CardContent>
           </Card>
           <Tabs value={activeTier} onValueChange={setActiveTier}>
             <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 mb-4">
-              {tiers.map((tier) => (
+              {tiers.map(tier => (
                 <TabsTrigger key={tier.name} value={tier.name} className={`${tier.color} text-white`}>
                   {tier.name}
                 </TabsTrigger>
               ))}
             </TabsList>
-            {tiers.map((tier) => (
+            {tiers.map(tier => (
               <TabsContent key={tier.name} value={tier.name}>
                 <Card className={`${tier.color} text-white mb-4`}>
                   <CardHeader>
                     <CardTitle>{tier.name}</CardTitle>
-                    <CardDescription className="text-white">{tier.description}</CardDescription>
+                    <CardDescription className="text-white">
+                      {tier.description || 'No description available'}
+                    </CardDescription>
                   </CardHeader>
                 </Card>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {tier.name === "Non-Tiered"
-                    ? nonTieredServices.map(renderServiceCard)
-                    : services.filter(s => s.tier === tier.name).map(renderServiceCard)}
+                  {services.filter(s => s.tier === tier.name).map(service => {
+                    if (!service) return null; // Skip if service is undefined
+                    return renderServiceCard(service);
+                  })}
                 </div>
               </TabsContent>
             ))}
           </Tabs>
         </TabsContent>
+
         <TabsContent value="models">
           <Tabs value={activeModelsTab} onValueChange={setActiveModelsTab}>
             <TabsList>
@@ -576,198 +580,205 @@ export default function Component() {
               <TabsTrigger value="performance">Performance</TabsTrigger>
             </TabsList>
             <TabsContent value="availability">
-  <Card>
-    <CardHeader>
-      <CardTitle>Model Availability</CardTitle>
-      <CardDescription>Overview of supported models by service (Free Tier)</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="mb-4">
-        {(['GPT-4', 'Claude-3', 'Gemini-1.5', 'Llama-3.1-405b', 'Midjourney', 'DALL-E-3', 'Stable-Image-Ultra', 'Stable-Diffusion-3'] as const).map((model) => (
-          <Button 
-            key={model}
-            onClick={() => setModelAvailabilitySorting(model)} 
-            variant={modelAvailabilitySorting === model ? 'default' : 'outline'}
-          >
-            Sort by {model}
-          </Button>
-        ))}
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Service</th>
-              <th>GPT-4</th>
-              <th>Claude-3</th>
-              <th>Gemini-1.5</th>
-              <th>Llama-3.1-405b</th>
-              <th>Midjourney</th>
-              <th>DALL-E-3</th>
-              <th>Stable-Image-Ultra</th>
-              <th>Stable-Diffusion-3</th>
-            </tr>
-          </thead>
-          <tbody>
-            {services
-              .sort((a, b) => {
-                if (!modelAvailabilitySorting) return 0;
-                const aValue = a.modelAvailability[modelAvailabilitySorting as ModelAvailabilityKey];
-                const bValue = b.modelAvailability[modelAvailabilitySorting as ModelAvailabilityKey];
-                
-                const getValueForSort = (emoji: '✅' | '💰' | '❌'): number => {
-                  switch (emoji) {
-                    case '✅': return 2;
-                    case '💰': return 1;
-                    case '❌': return 0;
-                    default: return -1;
-                  }
-                };
-              
-                return getValueForSort(bValue) - getValueForSort(aValue);
-              })
-              .map((service) => {
-                const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
-                return (
-                  <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
-                    <td className={`font-semibold ${tierColor === 'bg-purple-500' || tierColor === 'bg-blue-500' ? 'text-white' : ''}`}>{service.name}</td>
-                    <td className="text-center">{service.modelAvailability['GPT-4']}</td>
-                    <td className="text-center">{service.modelAvailability['Claude-3']}</td>
-                    <td className="text-center">{service.modelAvailability['Gemini-1.5']}</td>
-                    <td className="text-center">{service.modelAvailability['Llama-3.1-405b']}</td>
-                    <td className="text-center">{service.modelAvailability['Midjourney']}</td>
-                    <td className="text-center">{service.modelAvailability['DALL-E-3']}</td>
-                    <td className="text-center">{service.modelAvailability['Stable-Image-Ultra']}</td>
-                    <td className="text-center">{service.modelAvailability['Stable-Diffusion-3']}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-4">
-        ✅ - Available for everyone<br/>
-        💰 - Available for donators only<br/>
-        ❌ - Not available at all
-      </p>
-    </CardContent>
-  </Card>
-</TabsContent>
-<TabsContent value="endpoints">
-  <Card>
-    <CardHeader>
-      <CardTitle>Endpoint Coverage</CardTitle>
-      <CardDescription>Available endpoints by service</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="mb-4">
-        {(['Text-To-Speech', 'Speech-To-Text', 'Embeddings', 'Audio', 'Translation', 'Image-Upscale'] as const).map((endpoint) => (
-          <Button 
-            key={endpoint}
-            onClick={() => setEndpointCoverageSorting(endpoint)} 
-            variant={endpointCoverageSorting === endpoint ? 'default' : 'outline'}
-          >
-            Sort by {endpoint}
-          </Button>
-        ))}
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Service</th>
-              <th>Text-To-Speech</th>
-              <th>Speech-To-Text</th>
-              <th>Embeddings</th>
-              <th>Audio</th>
-              <th>Translation</th>
-              <th>Image-Upscale</th>
-            </tr>
-          </thead>
-          <tbody>
-            {services
-              .sort((a, b) => {
-                if (!endpointCoverageSorting) return 0;
-                return (b.endpointCoverage[endpointCoverageSorting] === '✅' ? 1 : 0) - (a.endpointCoverage[endpointCoverageSorting] === '✅' ? 1 : 0);
-              })
-              .map((service) => {
-                const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
-                return (
-                  <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
-                    <td className={`font-semibold ${tierColor === 'bg-purple-500' || tierColor === 'bg-blue-500' ? 'text-white' : ''}`}>{service.name}</td>
-                    <td className="text-center">{service.endpointCoverage['Text-To-Speech']}</td>
-                    <td className="text-center">{service.endpointCoverage['Speech-To-Text']}</td>
-                    <td className="text-center">{service.endpointCoverage['Embeddings']}</td>
-                    <td className="text-center">{service.endpointCoverage['Audio']}</td>
-                    <td className="text-center">{service.endpointCoverage['Translation']}</td>
-                    <td className="text-center">{service.endpointCoverage['Image-Upscale']}</td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-4">
-        ✅ - Available<br/>
-        ❌ - Not available
-      </p>
-    </CardContent>
-  </Card>
-</TabsContent>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Model Availability</CardTitle>
+                  <CardDescription>Overview of supported models by service (Free Tier)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4">
+                    {(['GPT-4', 'Claude-3', 'Gemini-1.5', 'Llama-3.1-405b', 'Midjourney', 'DALL-E-3', 'Stable-Image-Ultra', 'Stable-Diffusion-3'] as const).map((model) => (
+                      <Button
+                        key={model}
+                        onClick={() => setModelAvailabilitySorting(model)}
+                        variant={modelAvailabilitySorting === model ? 'default' : 'outline'}
+                      >
+                        Sort by {model}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr>
+                          <th className="text-left">Service</th>
+                          <th>GPT-4</th>
+                          <th>Claude-3</th>
+                          <th>Gemini-1.5</th>
+                          <th>Llama-3.1-405b</th>
+                          <th>Midjourney</th>
+                          <th>DALL-E-3</th>
+                          <th>Stable-Image-Ultra</th>
+                          <th>Stable-Diffusion-3</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {services
+                        .sort((a, b) => {
+                          if (modelAvailabilitySorting === '') return 0;
+                          const aAvailability = a.modelAvailability?.[modelAvailabilitySorting] === '✅' ? 1 : 0;
+                          const bAvailability = b.modelAvailability?.[modelAvailabilitySorting] === '✅' ? 1 : 0;
+                          return bAvailability - aAvailability;
+                        })
+                        .map((service) => {
+                          const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
+                          return (
+                            <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
+                              <td className={`font-semibold ${tierColor === 'bg-purple-500' || tierColor === 'bg-blue-500' ? 'text-white' : ''}`}>
+                                {service.name}
+                              </td>
+                              <td className="text-center">{service.modelAvailability?.['GPT-4'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Claude-3'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Gemini-1.5'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Llama-3.1-405b'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Midjourney'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['DALL-E-3'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Stable-Image-Ultra'] ?? '❌'}</td>
+                              <td className="text-center">{service.modelAvailability?.['Stable-Diffusion-3'] ?? '❌'}</td>
+                            </tr>
+                          );
+                        })}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="endpoints">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Endpoint Coverage</CardTitle>
+                  <CardDescription>Overview of supported endpoints by service (Free Tier)</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4">
+                    {(['Text-To-Speech', 'Speech-To-Text', 'Embeddings', 'Audio', 'Translation', 'Image-Upscale'] as const).map((endpoint) => (
+                      <Button
+                        key={endpoint}
+                        onClick={() => setEndpointCoverageSorting(endpoint)}
+                        variant={endpointCoverageSorting === endpoint ? 'default' : 'outline'}
+                      >
+                        Sort by {endpoint}
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr>
+                          <th className="text-left">Service</th>
+                          <th>Text-To-Speech</th>
+                          <th>Speech-To-Text</th>
+                          <th>Embeddings</th>
+                          <th>Audio</th>
+                          <th>Translation</th>
+                          <th>Image-Upscale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {services
+                        .sort((a, b) => {
+                          if (endpointCoverageSorting === '') return 0;
+                          
+                          const aCoverage = a.endpointCoverage?.[endpointCoverageSorting] === '✅' ? 1 : 0;
+                          const bCoverage = b.endpointCoverage?.[endpointCoverageSorting] === '✅' ? 1 : 0;
+                          
+                          return bCoverage - aCoverage;
+                        })
+                        .map((service) => {
+                          const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
+                          
+                          return (
+                            <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
+                              <td className={`font-semibold ${tierColor === 'bg-purple-500' || tierColor === 'bg-blue-500' ? 'text-white' : ''}`}>
+                                {service.name}
+                              </td>
+                              <td className="text-center">{service.endpointCoverage?.['Text-To-Speech'] ?? '❌'}</td>
+                              <td className="text-center">{service.endpointCoverage?.['Speech-To-Text'] ?? '❌'}</td>
+                              <td className="text-center">{service.endpointCoverage?.['Embeddings'] ?? '❌'}</td>
+                              <td className="text-center">{service.endpointCoverage?.['Audio'] ?? '❌'}</td>
+                              <td className="text-center">{service.endpointCoverage?.['Translation'] ?? '❌'}</td>
+                              <td className="text-center">{service.endpointCoverage?.['Image-Upscale'] ?? '❌'}</td>
+                            </tr>
+                          );
+                        })}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
             <TabsContent value="performance">
               <Card>
                 <CardHeader>
-                  <CardTitle>Performance Metrics (Not yet measured. To be added!)</CardTitle>
-                  <CardDescription>Response time (ms) and availability for each service</CardDescription>
+                  <CardTitle>Performance</CardTitle>
+                  <CardDescription>Overview of service performance metrics (Free Tier)</CardDescription>
                 </CardHeader>
                 <CardContent>
-                <div className="mb-4">
-                  <Button onClick={() => setPerformanceSorting('gpt4')} variant={performanceSorting === 'gpt4' ? 'default' : 'outline'}>
-                    Sort by GPT-4o-Mini
-                  </Button>
-                  <Button onClick={() => setPerformanceSorting('claude3')} variant={performanceSorting === 'claude3' ? 'default' : 'outline'}>
-                    Sort by Claude-3-Haiku
-                  </Button>
-                  <Button onClick={() => setPerformanceSorting('gemini')} variant={performanceSorting === 'gemini' ? 'default' : 'outline'}>
-                    Sort by Gemini-1.5-Flash
-                  </Button>
-                  <Button onClick={() => setPerformanceSorting('llama')} variant={performanceSorting === 'llama' ? 'default' : 'outline'}>
-                    Sort by Llama-3.1-8b-Instruct
-                  </Button>
-                  <Button onClick={() => setPerformanceSorting('availability')} variant={performanceSorting === 'availability' ? 'default' : 'outline'}>
-                    Sort by Availability
-                  </Button>
-                </div>
+                  <div className="mb-4">
+                    {(['gpt4', 'claude3', 'gemini', 'llama', 'availability'] as const).map((metric) => (
+                      <Button
+                        key={metric}
+                        onClick={() => setPerformanceSorting(metric)}
+                        variant={performanceSorting === metric ? 'default' : 'outline'}
+                      >
+                        Sort by {metric}
+                      </Button>
+                    ))}
+                  </div>
                   <div className="overflow-x-auto">
-                  <table className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left">Service</th>
-                      <th>GPT-4o-Mini</th>
-                      <th>Claude-3-Haiku</th>
-                      <th>Gemini-1.5-Flash</th>
-                      <th>Llama-3.1-8b-Instruct</th>
-                      <th>Availability (%)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {services
-                      .sort((a, b) => a.performance[performanceSorting] - b.performance[performanceSorting])
-                      .map((service) => {
-                        const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
-                        return (
-                          <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
-                            <td className="font-semibold">{service.name}</td>
-                            <td className="text-center">{service.performance.gpt4}</td>
-                            <td className="text-center">{service.performance.claude3}</td>
-                            <td className="text-center">{service.performance.gemini}</td>
-                            <td className="text-center">{service.performance.llama}</td>
-                            <td className="text-center">{service.performance.availability}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+                    <table className="w-full">
+                      <thead>
+                        <tr>
+                          <th className="text-left">Service</th>
+                          <th>Latency</th>
+                          <th>Throughput</th>
+                          <th>Uptime</th>
+                          <th>Support</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+  {services
+    .sort((a, b) => {
+      if (!modelAvailabilitySorting) return 0;
+
+      // Use type assertion to tell TypeScript that modelAvailabilitySorting is a valid key
+      const aValue = (a.modelAvailability?.[modelAvailabilitySorting as keyof typeof a.modelAvailability] ?? '❌') as '✅' | '💰' | '❌';
+      const bValue = (b.modelAvailability?.[modelAvailabilitySorting as keyof typeof b.modelAvailability] ?? '❌') as '✅' | '💰' | '❌';
+
+      const getValueForSort = (emoji: '✅' | '💰' | '❌'): number => {
+        switch (emoji) {
+          case '✅': return 2;
+          case '💰': return 1;
+          case '❌': return 0;
+          default: return -1;
+        }
+      };
+
+      return getValueForSort(bValue) - getValueForSort(aValue);
+    })
+    .map((service) => {
+      const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
+      return (
+        <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
+          <td className={`font-semibold ${tierColor === 'bg-purple-500' || tierColor === 'bg-blue-500' ? 'text-white' : ''}`}>{service.name}</td>
+          <td className="text-center">{service.modelAvailability?.['GPT-4'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Claude-3'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Gemini-1.5'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Llama-3.1-405b'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Midjourney'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['DALL-E-3'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Stable-Image-Ultra'] ?? '❌'}</td>
+          <td className="text-center">{service.modelAvailability?.['Stable-Diffusion-3'] ?? '❌'}</td>
+        </tr>
+      );
+    })}
+</tbody>
+
+
+                    </table>
                   </div>
                 </CardContent>
               </Card>
@@ -775,33 +786,7 @@ export default function Component() {
           </Tabs>
         </TabsContent>
       </Tabs>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Info className="mr-2" />
-            About This Showcase
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>This showcase is maintained by @zukixa, the queen of zukijourney. The information provided is based on collected metrics and may not be entirely accurate or up-to-date. Use the listed services at your own discretion and risk. You can request updates, fix issues, or contribute to the project on Github.</p>
-        </CardContent>
-      </Card>
-
-      <footer className="text-center text-sm text-muted-foreground">
-      <p>Last updated: August 27, 2024</p>
-      <p>Star this project on GitHub:</p>
-      <div className="flex justify-center items-center mt-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => window.open('https://github.com/zukixa/cool-ai-stuff', '_blank', 'noopener,noreferrer')}
-        >
-          <Star className="mr-2 h-4 w-4" />
-          Star on GitHub
-        </Button>
-      </div>
-    </footer>
     </div>
-  )
-}
+  );
+};
+  

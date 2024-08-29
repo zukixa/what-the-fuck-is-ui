@@ -23,14 +23,16 @@ export const SortBySelect = <SelectType extends string>({
     setSelect,
 }: SortItems<SelectType>) => {
     return (
+       
         <Select value={activeSelect} onValueChange={(value) => setSelect(value as SelectType)}>
-            <SelectTrigger className="w-[180px]">
+            <div className="flex items-center">
+            {trigger}:  
+            <SelectTrigger className="w-[180px] ml-2">
                 <SelectValue placeholder={trigger}>{activeSelect}</SelectValue>
             </SelectTrigger>
-            
+            </div>
             <SelectContent>
                 <SelectGroup>
-                    <SelectLabel>{trigger}</SelectLabel>
                     {items.map((item) => (
                         <SelectItem key={item} value={item}>
                             {item}

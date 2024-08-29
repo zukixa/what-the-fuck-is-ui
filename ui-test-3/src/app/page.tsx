@@ -541,16 +541,7 @@ export default function Component() {
                 activeSelect={overviewSorting}
                 setSelect={setOverviewSorting}
             />
-            {/*<Select value={overviewSorting} onValueChange={handleSortValueChange}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="members">Members</SelectItem>
-                <SelectItem value="openSource">Open Source</SelectItem>
-                <SelectItem value="tier">Tier</SelectItem>
-              </SelectContent>
-            </Select>*/}
+            
             
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

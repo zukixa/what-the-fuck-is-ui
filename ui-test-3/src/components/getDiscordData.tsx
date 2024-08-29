@@ -38,7 +38,7 @@ async function getApiDataFromSource() {
     {
         name: "zukijourney",
         tier: "Tier 1",
-        users: (await getGuildCount("zukijourney")) ?? 0,
+        users: 5305, //(await getGuildCount("zukijourney")) ?? 0,
         nsfwAllowed: "Use /unf/chat... not /v1/",
         openSource: true,
         openSourceLink: "https://github.com/zukixa/zukijourney-api",
@@ -56,7 +56,7 @@ async function getApiDataFromSource() {
     {
         name: "NagaAI",
         tier: "Tier 1",
-        users: (await getGuildCount("JxRBXBhabu")) ?? 0,
+        users: 3157, // (await getGuildCount("JxRBXBhabu")) ?? 0,
         nsfwAllowed: "Forbidden",
         openSource: false,
         owners: "ZentixUA",

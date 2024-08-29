@@ -211,7 +211,7 @@ async function getApiDataFromSource() {
     },
     {
         name: "AnyAI",
-        tier: "Tier 3.5",
+        tier: "Tier 3",
         users: 791,
         nsfwAllowed: "Allowed",
         openSource: false,
@@ -219,7 +219,7 @@ async function getApiDataFromSource() {
         ownersLink: "https://github.com/meow18838",
         models: "Models",
         modelsLink: "https://api.llmplayground.net/v1/models",
-        notes:  "[Conducted a coordinated raid on another AI API server.](https://rentry.co/progptraid). Very weird owner, seems to try and sell you a lot of services at once. Runs [https://llmplayground.net](https://llmplayground.net) as well.",
+        notes:  "Very peculiar owner, seems to try and sell you a lot of services at once. Runs [https://llmplayground.net](https://llmplayground.net) as well.",
         discord: "https://discord.gg/anyai",
         limitsLink: "https://api.llmplayground.net/v1/models",
         performance: { gpt4: 0, claude3: 0, gemini: 0, llama: 0, availability: 100 },
@@ -344,14 +344,19 @@ async function getApiDataFromSource() {
 export async function getApiData() {
   const now = Date.now();
 
-  if (cache.timestamp && (now - cache.timestamp < CACHE_EXPIRY)) {
+  if (cache.timestamp && cache.data && (now - cache.timestamp < CACHE_EXPIRY)) {
     return cache.data;
   }
 
-  const data = await getApiDataFromSource();
-  cache = {
-    data,
-    timestamp: now,
-  };
-  return data;
+  try {
+    const data = await getApiDataFromSource();
+    cache = {
+      data,
+      timestamp: now,
+    };
+    return data;
+  } catch (error) {
+    console.error('Error fetching API data:', error);
+    return []; 
+  }
 }

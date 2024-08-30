@@ -68,7 +68,7 @@ interface Service {
 
 export default function Component() {
   
-  const [services, setApiData] = useState<Service[]>([])
+  const [services, setServices] = useState<Service[]>([])
   const [activeTab, setActiveTab] = useState('overview');
   const [overviewSorting, setOverviewSorting] = useState<'Members' | 'Open Source' | 'Tier'>('Members');
   const [activeTier, setActiveTier] = useState<string>(''); // Set appropriate default value or type
@@ -110,13 +110,18 @@ export default function Component() {
   ]
   useEffect(() => {
     async function fetchData() {
-      const data = await getApiData();
-      setApiData(data as Service[]);
+      try {
+        const data = await getApiData();
+        setServices(data);
+      } catch (error) {
+        console.error("Error fetching API data:", error);
+        setServices([]); // Set to empty array in case of error
+      }
     }
     fetchData();
   }, []);
   
-  const isLoading = !services.length;
+  const isLoading = !services?.length;
 
   
   const renderServiceCard = (service: Service) => {

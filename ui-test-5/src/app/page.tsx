@@ -263,11 +263,9 @@ export default function Component() {
                             <li>For accurate military simulations, provide extensive context for the war. Include current war front information, equipment, and troop numbers for both sides.</li>
                             <li>AI prefers detailed and specific inputs. Shorter and less informative posts may lead to less accurate and comprehensive outputs. This may also lead to preference to certain economic styles, like megaproject spending.</li>
                             <li>When discussing economic topics like GDP growth, AI defaults to an assumption of 0% growth. To avoid accumulation of inaccurate GDP growth rates, provide current relevant growth figures in your context.</li>
-                            <li>The /settings command is essential as it gives the AI context to understand the RP's world better. With /settings, each AI output is contextually tied to a "global context", enhancing accuracy.</li>
+                            <li>The /settings command is essential as it gives the AI context to understand the RPs world better. With /settings, each AI output is contextually tied to a &apos;global context&apos;, enhancing accuracy.</li>
                             <li>Without context, the AI might generate incorrect or made-up information. Always supply the AI with previous results or relevant context.</li>
                             <li>The AI takes any provided context as truth. It's crucial to use /save properly and verify the accuracy of user inputs to prevent misleading the AI.</li>
-                            <li>AI prefers detailed and specific inputs. Shorter and less informative posts may lead to less accurate and comprehensive outputs. This may also lead to preference to certain economic styles, like megaproject spending.</li>
-                            <li>When discussing economic topics like "GDP growth", AI defaults to an assumption of 0% growth. To avoid accumulation of inaccurate GDP growth rates, provide current relevant growth figures in your context.</li>
                           </ul>
                         </AccordionContent>
                       </AccordionItem>

@@ -111,7 +111,7 @@ export default function Component() {
   useEffect(() => {
     async function fetchData() {
       const data = await getApiData();
-      setApiData(data);
+      setApiData(data as Service[]);
     }
     fetchData();
   }, []);

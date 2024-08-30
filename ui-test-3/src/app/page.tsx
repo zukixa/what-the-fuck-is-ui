@@ -588,7 +588,7 @@ export default function Component() {
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">No sorting</SelectItem>
+            <SelectItem value="default" disabled>Select a model</SelectItem>
             {(['GPT-4', 'Claude-3', 'Gemini-1.5', 'Llama-3.1-405b', 'Midjourney', 'DALL-E-3', 'Stable-Image-Ultra', 'Stable-Diffusion-3'] as const).map((model) => (
               <SelectItem key={model} value={model}>Sort by {model}</SelectItem>
             ))}
@@ -668,7 +668,7 @@ export default function Component() {
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">No sorting</SelectItem>
+            <SelectItem value="default" disabled>Select an endpoint</SelectItem>
             {(['Text-To-Speech', 'Speech-To-Text', 'Embeddings', 'Audio', 'Translation', 'Image-Upscale'] as const).map((endpoint) => (
               <SelectItem key={endpoint} value={endpoint}>Sort by {endpoint}</SelectItem>
             ))}

@@ -265,7 +265,7 @@ export default function Component() {
                             <li>When discussing economic topics like GDP growth, AI defaults to an assumption of 0% growth. To avoid accumulation of inaccurate GDP growth rates, provide current relevant growth figures in your context.</li>
                             <li>The /settings command is essential as it gives the AI context to understand the RPs world better. With /settings, each AI output is contextually tied to a &apos;global context&apos;, enhancing accuracy.</li>
                             <li>Without context, the AI might generate incorrect or made-up information. Always supply the AI with previous results or relevant context.</li>
-                            <li>The AI takes any provided context as truth. It's crucial to use /save properly and verify the accuracy of user inputs to prevent misleading the AI.</li>
+                            <li>The AI takes any provided context as truth. It&#39;s crucial to use /settings properly and verify the accuracy of user inputs to prevent misleading the AI.</li>
                           </ul>
                         </AccordionContent>
                       </AccordionItem>

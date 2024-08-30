@@ -47,13 +47,13 @@ export default function Component() {
                 <AccordionItem value="item-3">
                   <AccordionTrigger>3. Information Sharing & Disclosure</AccordionTrigger>
                   <AccordionContent>
-                    We do not sell, trade, or rent user's personal identification information to third parties. We may share generic aggregated demographic information not linked to personal identification for analytical or reporting purposes.
+                    We do not sell, trade, or rent users personal identification information to third parties. We may share generic aggregated demographic information not linked to personal identification for analytical or reporting purposes.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
                   <AccordionTrigger>4. Data Retention and Deletion</AccordionTrigger>
                   <AccordionContent>
-                    We retain user data only as long as necessary. To delete your information, submit a request through the appropriate channel for the service you're using. We will address your request promptly.
+                    We retain user data only as long as necessary. To delete your information, submit a request through the appropriate channel for the service youre using. We will address your request promptly.
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-5">
@@ -100,7 +100,7 @@ export default function Component() {
                 <AccordionItem value="item-5">
                   <AccordionTrigger>5. Changes to Terms</AccordionTrigger>
                   <AccordionContent>
-                    We reserve the right to modify or replace these Terms of Service at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect.
+                    We reserve the right to modify or replace these Terms of Service at any time. If a revision is material, we will try to provide at least 30 days notice prior to any new terms taking effect.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

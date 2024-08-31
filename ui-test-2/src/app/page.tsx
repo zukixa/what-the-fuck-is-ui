@@ -144,21 +144,21 @@ export default function Home() {
           title: 'zukijourney-api', 
           desc: 'Leading the charge as the largest Discord AI API platform!', 
           tech: ['AI', 'API', 'Discord', 'SQLite', 'Redis', 'FastAPI', 'Python', 'Cloudflare', 'Ubuntu Server', 'ollama'], 
-          link: 'https://github.com/zukijourney/api-docs',
+          link: 'https://docs.xyzbot.net',
           additionalInfo: 'Scalable access to various open-source large-language and image AI models for over 5000 users. Maintained <2 second response time and near-100% uptime.'
         },
         { 
           title: 'zukijourney-bots', 
           desc: 'Various Discord bots designed by the zukijourney team.', 
           tech: ['Discord', 'Bots', 'AI', 'Python', 'Time Management'], 
-          link: 'https://github.com/zukijourney/bots-docs',
+          link: 'https://bots.xyzbot.net',
           additionalInfo: 'zuki.gm (An AI DnD-GameMaster-like bot) exceeded 2500 unique servers and 50000 unique users.&lt;br&gt;zuki.time (A roleplay time management bot) exceeded 300 unique servers and 5000 unique users.'
         },
         { 
           title: 'cool-ai-stuff', 
           desc: 'Your ultimate guide to free AI APIs', 
           tech: ['AI', 'APIs', 'Resources', 'Documentation'], 
-          link: 'https://github.com/zukixa/cool-ai-stuff',
+          link: 'https://cas.xyzbot.net',
           additionalInfo: 'Comprehensive resource for developers looking to integrate AI capabilities into their projects.'
         },
       ].map((project, index) => (

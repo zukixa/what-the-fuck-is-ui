@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -64,6 +64,15 @@ interface NonTieredService {
   discord: string;
 }
 
+interface PerformanceMetrics {
+  [key: string]: {
+    [model: string]: {
+      average_response_time: number;
+      availability_percentage: number;
+    }
+  }
+}
+
 export default function Component() {
   const [activeTab, setActiveTab] = useState("overview")
   const [activeTier, setActiveTier] = useState("Tier 1")
@@ -74,6 +83,24 @@ export default function Component() {
   type EndpointCoverageKey = keyof Service['endpointCoverage'];
   const [modelAvailabilitySorting, setModelAvailabilitySorting] = useState<ModelAvailabilityKey | ''>('');
   const [endpointCoverageSorting, setEndpointCoverageSorting] = useState<EndpointCoverageKey | ''>('');
+  const [performanceMetrics, setPerformanceMetrics] = useState<PerformanceMetrics | null>(null);
+
+  useEffect(() => {
+    const fetchPerformanceMetrics = async () => {
+      try {
+        const response = await fetch('/api/metrics');
+        if (!response.ok) {
+          throw new Error('Failed to fetch performance metrics');
+        }
+        const data = await response.json();
+        setPerformanceMetrics(data);
+      } catch (error) {
+        console.error('Error fetching performance metrics:', error);
+      }
+    };
+
+    fetchPerformanceMetrics();
+  }, []);
 
   const tiers: Tier[] = [
     {
@@ -205,7 +232,7 @@ export default function Component() {
       ownersLink: "https://github.com/tornado-softwares",
       models: "Models",
       modelsLink: "https://app.oxyapi.uk/v1/models",
-      notes: "Stole Website UI before, current likely is too. Offended at jokes easily. Service probably fine otherwise.",
+      notes: "Current Frontpage UI is stolen from [Here](https://witter.framer.ai/), Dashboard UI from [Here](https://vercel.com). Service stable and alive for a long time already otherwise.",
       discord: "https://discord.com/invite/kM6MaCqGKA",
       limitsLink: "https://app.oxyapi.uk/v1/models",
       performance: { gpt4: 0, claude3: 0, gemini: 0, llama: 0, availability: 100 },
@@ -426,7 +453,6 @@ export default function Component() {
   
       return <>{parts}</>;
     };
-  
     return (
       <Card key={service.name} className={`flex flex-col ${tiers.find(t => t.name === (service as Service).tier)?.color || 'bg-blue-500'}`}>
         <CardHeader className="flex-grow">
@@ -718,57 +744,113 @@ export default function Component() {
     </CardContent>
   </Card>
 </TabsContent>
-            <TabsContent value="performance">
+<TabsContent value="performance">
               <Card>
                 <CardHeader>
-                  <CardTitle>Performance Metrics (Not yet measured. To be added!)</CardTitle>
+                  <CardTitle>Performance Metrics</CardTitle>
                   <CardDescription>Response time (ms) and availability for each service</CardDescription>
                 </CardHeader>
                 <CardContent>
-                <div className="mb-4">
-                  <Select onValueChange={(value) => setPerformanceSorting(value as 'gpt4' | 'claude3' | 'gemini' | 'llama' | 'availability')} defaultValue="availability">
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gpt4">Sort by GPT-4o-Mini</SelectItem>
-                      <SelectItem value="claude3">Sort by Claude-3-Haiku</SelectItem>
-                      <SelectItem value="gemini">Sort by Gemini-1.5-Flash</SelectItem>
-                      <SelectItem value="llama">Sort by Llama-3.1-8b-Instruct</SelectItem>
-                      <SelectItem value="availability">Sort by Availability</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <div className="mb-4">
+                    <Select onValueChange={(value) => setPerformanceSorting(value as 'gpt4' | 'claude3' | 'gemini' | 'llama' | 'availability')} defaultValue="availability">
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Sort by" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="gpt4">Sort by GPT-4o-Mini</SelectItem>
+                        <SelectItem value="claude3">Sort by Claude-3-Haiku</SelectItem>
+                        <SelectItem value="gemini">Sort by Gemini-1.5-Flash</SelectItem>
+                        <SelectItem value="llama">Sort by Llama-3.1-8b-Instruct</SelectItem>
+                        <SelectItem value="availability">Sort by Availability</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <div className="overflow-x-auto">
-                  <table className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left">Service</th>
-                      <th>GPT-4o-Mini</th>
-                      <th>Claude-3-Haiku</th>
-                      <th>Gemini-1.5-Flash</th>
-                      <th>Llama-3.1-8b-Instruct</th>
-                      <th>Availability (%)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {services
-                      .sort((a, b) => a.performance[performanceSorting] - b.performance[performanceSorting])
-                      .map((service) => {
-                        const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
-                        return (
-                          <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
-                            <td className="font-semibold">{service.name}</td>
-                            <td className="text-center">{service.performance.gpt4}</td>
-                            <td className="text-center">{service.performance.claude3}</td>
-                            <td className="text-center">{service.performance.gemini}</td>
-                            <td className="text-center">{service.performance.llama}</td>
-                            <td className="text-center">{service.performance.availability}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+                    <table className="w-full">
+                      <thead>
+                        <tr>
+                          <th className="text-left">Service</th>
+                          <th>GPT-4o-Mini</th>
+                          <th>Claude-3-Haiku</th>
+                          <th>Gemini-1.5-Flash</th>
+                          <th>Llama-3.1-8b-Instruct</th>
+                          <th>Availability (%)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+  {services
+    .sort((a, b) => {
+      if (!performanceMetrics) return 0;
+      const aMetrics = performanceMetrics[a.name];
+      const bMetrics = performanceMetrics[b.name];
+
+      const getValue = (metrics: typeof aMetrics | undefined, model: string) => {
+        if (!metrics) return Infinity;
+        const value = metrics[model]?.average_response_time;
+        return value && value > 0 ? value : Infinity;
+      };
+
+      const getAvailability = (metrics: typeof aMetrics | undefined) => {
+        if (!metrics) return -1;
+        const availabilities = [
+          metrics['gpt-4o-mini']?.availability_percentage,
+          metrics['claude-3-haiku']?.availability_percentage,
+          metrics['gemini-1.5-flash-latest']?.availability_percentage,
+          metrics['llama-3.1-8b-instruct']?.availability_percentage
+        ].filter(v => v !== undefined);
+        return availabilities.length > 0 ? availabilities.reduce((a, b) => a + b, 0) / availabilities.length : -1;
+      };
+
+      switch (performanceSorting) {
+        case 'gpt4':
+          return getValue(aMetrics, 'gpt-4o-mini') - getValue(bMetrics, 'gpt-4o-mini');
+        case 'claude3':
+          return getValue(aMetrics, 'claude-3-haiku') - getValue(bMetrics, 'claude-3-haiku');
+        case 'gemini':
+          return getValue(aMetrics, 'gemini-1.5-flash-latest') - getValue(bMetrics, 'gemini-1.5-flash-latest');
+        case 'llama':
+          return getValue(aMetrics, 'llama-3.1-8b-instruct') - getValue(bMetrics, 'llama-3.1-8b-instruct');
+        case 'availability':
+          return getAvailability(bMetrics) - getAvailability(aMetrics);
+        default:
+          return 0;
+      }
+    })
+    .map((service) => {
+      const tierColor = tiers.find(t => t.name === service.tier)?.color || 'bg-gray-200';
+      const metrics = performanceMetrics?.[service.name];
+      
+      const formatMetric = (value: number | undefined) => {
+        if (value === undefined || value === 0) return 'N/A';
+        return value.toFixed(3);
+      };
+
+      const calculateAvailability = () => {
+        if (!metrics) return 'N/A';
+        const availabilities = [
+          metrics['gpt-4o-mini']?.availability_percentage,
+          metrics['claude-3-haiku']?.availability_percentage,
+          metrics['gemini-1.5-flash-latest']?.availability_percentage,
+          metrics['llama-3.1-8b-instruct']?.availability_percentage
+        ].filter(v => v !== undefined);
+        return availabilities.length > 0 
+          ? (availabilities.reduce((a, b) => a + b, 0) / availabilities.length).toFixed(2)
+          : 'N/A';
+      };
+
+      return (
+        <tr key={service.name} className={`${tierColor} bg-opacity-50 hover:bg-opacity-75 transition-colors`}>
+          <td className="font-semibold">{service.name}</td>
+          <td className="text-center">{formatMetric(metrics?.['gpt-4o-mini']?.average_response_time)}</td>
+          <td className="text-center">{formatMetric(metrics?.['claude-3-haiku']?.average_response_time)}</td>
+          <td className="text-center">{formatMetric(metrics?.['gemini-1.5-flash-latest']?.average_response_time)}</td>
+          <td className="text-center">{formatMetric(metrics?.['llama-3.1-8b-instruct']?.average_response_time)}</td>
+          <td className="text-center">{calculateAvailability()}</td>
+        </tr>
+      );
+    })}
+</tbody>
+                    </table>
                   </div>
                 </CardContent>
               </Card>
@@ -790,7 +872,7 @@ export default function Component() {
       </Card>
 
       <footer className="text-center text-sm text-muted-foreground">
-      <p>Last updated: August 27, 2024</p>
+      <p>Last updated: August 30, 2024</p>
       <p>Star this project on GitHub:</p>
       <div className="flex justify-center items-center mt-2">
         <Button 

@@ -748,7 +748,7 @@ export default function Component() {
               <Card>
                 <CardHeader>
                   <CardTitle>Performance Metrics</CardTitle>
-                  <CardDescription>Response time (ms) and availability for each service</CardDescription>
+                  <CardDescription>Response time (ms) and availability for each service. Measured with free-tier keys for each API.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="mb-4">
